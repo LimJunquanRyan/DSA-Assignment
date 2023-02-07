@@ -1,37 +1,32 @@
 #pragma once
-#include<string>
 #include<iostream>
-#include "PostList.h"
+#include "ForumElements.h"
 using namespace std;
 
-typedef string ItemType;
+typedef ForumElements ItemType;
 
-class TopicList
+class List
 {
 private:
-	struct TopicNode
+	struct Node
 	{
-		string title;		// title
-		string description;	// description
-		PostList* posts;
-		TopicNode* nextTopic;	// pointer pointing to next item
+		ItemType item;
+		Node* next;	// pointer pointing to next item
 	};
 
-	TopicNode* firstNode;	// point to the first item
+	Node* firstNode;	// point to the first item
 	int  size;			// number of items in the list
 
 public:
-	TopicList();			// constructor
+	List();			// constructor
 
-	~TopicList();		// destructor
+	~List();		// destructor
 
 	// add an item to the back of the list (append)
 	// pre : size < MAX_SIZE
 	// post: item is added to the front of the list
 	//       size of list is increased by 1
-	bool add(string title, string description);
-
-	bool addPost(string topic, string title, string description, bool priority, string createdBy);
+	bool add(ItemType item);
 
 	// remove an item at a specified position in the list
 	// pre : 0 <= index < size
@@ -63,8 +58,7 @@ public:
 	// display the items in the list
 	void print();
 
-	// display the items in the list
-	void printPosts(string topics);
+	ForumElements* returnAddress(ItemType item);
 
 	// void replace(int index, ItemType item);
 	// int search(ItemType item);
