@@ -1,16 +1,16 @@
 #pragma once
 #include<iostream>
-#include "ForumElements.h"
+#include "ForumElement.h"
 using namespace std;
 
-typedef ForumElements ItemType;
+typedef ForumElement ItemType;
 
 class List
 {
 private:
 	struct Node
 	{
-		ItemType item;
+		ItemType* item;
 		Node* next;	// pointer pointing to next item
 	};
 
@@ -26,7 +26,7 @@ public:
 	// pre : size < MAX_SIZE
 	// post: item is added to the front of the list
 	//       size of list is increased by 1
-	bool add(ItemType item);
+	bool add(ItemType* item);
 
 	// remove an item at a specified position in the list
 	// pre : 0 <= index < size
@@ -56,9 +56,9 @@ public:
 	//------------------- Other useful functions -----------------
 
 	// display the items in the list
-	void print();
+	bool print();
 
-	ForumElements* returnAddress(ItemType item);
+	ForumElement* returnAddress(ItemType item);
 
 	// void replace(int index, ItemType item);
 	// int search(ItemType item);

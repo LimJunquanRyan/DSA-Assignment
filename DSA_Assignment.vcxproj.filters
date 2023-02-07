@@ -44,7 +44,7 @@
     <ClInclude Include="List.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="ForumElements.h">
+    <ClInclude Include="ForumElement.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Topic.h">

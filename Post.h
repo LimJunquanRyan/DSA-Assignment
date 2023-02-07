@@ -6,16 +6,20 @@
 using namespace std;
 
 
-class Post : virtual public ForumElements {
+class Post : public ForumElement {
 private:
 	List* replies;
+	string accountName;
+	List* reactions;
 
 public:
 	Post();
-	Post(string t, string d);
+	~Post();
+	Post(string t, string d, string a);
 	bool getPriority();
 	void setPriority();
-	void addSubElements(Reply reply);
+	string getAccountName();
+	void addSubElements(Reply* reply);
 	void printSubElements();
 	void print() override;
 };

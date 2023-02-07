@@ -2,9 +2,15 @@
 #include <iostream>
 #include "Reply.h"
 
-
 Reply::Reply() { }
 
-Reply::Reply(string t, string d) : ForumElements(t, d) { }
+Reply::~Reply() {
+	setTitle("");
+	setDescription("");
+}
 
-void Reply::print() { ForumElements::print(); }
+Reply::Reply(string t, string d, string a) : ForumElement(t, d) { 
+	accountName = a;
+}
+
+void Reply::print() { ForumElement::print(); }

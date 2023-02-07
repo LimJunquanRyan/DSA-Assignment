@@ -4,10 +4,13 @@
 #include "List.h"
 using namespace std;
 
+class Reply : public ForumElement {
+private:
+	string accountName;
 
-class Reply : virtual public ForumElements {
 public:
 	Reply();
-	Reply(string title, string description);
+	~Reply();
+	Reply(string title, string description, string accountName);
 	void print() override;
 };

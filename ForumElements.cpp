@@ -1,32 +1,34 @@
 #include <string>
 #include <iostream>
-#include "ForumElements.h"
+#include "ForumElement.h"
 
-ForumElements::ForumElements() { 
+ForumElement::ForumElement() { 
 	title = "";
 	description = "";
 };
 
-ForumElements::ForumElements(string t, string d) { 
+ForumElement::~ForumElement() { }
+
+ForumElement::ForumElement(string t, string d) { 
 	setTitle(t);
 	setDescription(d);
 };
 
-string ForumElements::getTitle() { return title; };
+string ForumElement::getTitle() { return title; };
 
-void ForumElements::setTitle(string newTitle) {
+void ForumElement::setTitle(string newTitle) {
 	title = newTitle;
 };
 
-string ForumElements::getDescription() {
+string ForumElement::getDescription() {
 	return description;
 };
 
-void ForumElements::setDescription(string newDescription) {
+void ForumElement::setDescription(string newDescription) {
 	description = newDescription;
 };
 
-void ForumElements::print() {
+void ForumElement::print() {
 	cout << title << endl;
 	cout << description << endl;
 };

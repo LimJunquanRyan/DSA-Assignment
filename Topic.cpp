@@ -3,18 +3,26 @@
 #include "Topic.h"
 
 
-Topic::Topic() { }
-
-Topic::Topic(string t, string d) : ForumElements(t, d) { 
-	List temp;
-	temp.add(Post("1", "1"));
-	temp.add(Post("2", "2"));
-	temp.add(Post("3", "3"));
-	posts = &temp;
+Topic::Topic() { 
+	posts = new List();
 }
 
-void Topic::addSubElements(Post post) { posts->add(post); }
+Topic::Topic(string t, string d) : ForumElement(t, d) { 
+	List* temp = new List();
+	temp->add(new Post("Post1", "Desc", "1"));
+	temp->add(new Post("Post2", "Desc", "2"));
+	temp->add(new Post("Post3", "Desc", "3"));
+	posts = temp;
+}
 
-void Topic::printSubElements() { posts->print(); }
+List* Topic::getSubElements() { return posts; }
 
-void Topic::print() { ForumElements::print(); }
+void Topic::addSubElements(Post* post) { posts->add(post); }
+
+void Topic::printSubElements() {
+	if (!(posts->print())) {
+		cout << "No Posts yet." << endl;
+	}
+}
+
+void Topic::print() { ForumElement::print(); }

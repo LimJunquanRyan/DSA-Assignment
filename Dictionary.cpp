@@ -33,11 +33,11 @@ int Dictionary::hash(KeyType key) {
 			else {
 				temp = ((int)key[i] - (int)'a' + 26);
 			}
-			total = (total * 52 + temp) % 101;
+			total = (total * 52 + temp) % MAX_SIZE;
 		}
 		else {
-			temp = key[i];
-			total += temp;
+			temp = key[i] - 48;
+			total = (total * 10 + temp) % MAX_SIZE;
 		}
 	}
 	return total;

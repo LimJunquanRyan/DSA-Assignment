@@ -139,7 +139,7 @@
   <ItemGroup>
     <ClInclude Include="Account.h" />
     <ClInclude Include="Dictionary.h" />
-    <ClInclude Include="ForumElements.h" />
+    <ClInclude Include="ForumElement.h" />
     <ClInclude Include="List.h" />
     <ClInclude Include="Post.h" />
     <ClInclude Include="Reply.h" />

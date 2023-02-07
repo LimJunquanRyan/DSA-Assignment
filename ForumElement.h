@@ -2,15 +2,16 @@
 #include <iostream>
 using namespace std;
 
-class ForumElements {
+class ForumElement {
 private:
 	string title;
 	string description;
 	//bool priority;
 
 public:
-	ForumElements();
-	ForumElements(string t, string d);
+	ForumElement();
+	virtual ~ForumElement();
+	ForumElement(string t, string d);
 	string getTitle();
 	void setTitle(string newTitle);
 	string getDescription();

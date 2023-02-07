@@ -15,7 +15,7 @@ List::~List() {	// destructor
 // pre : size < MAX_SIZE
 // post: item is added to the front of the list
 //       size of list is increased by 1
-bool List::add(ItemType item) {
+bool List::add(ItemType* item) {
 	Node *newNode = new Node;
 	newNode->item = item;
 	newNode->next = NULL;
@@ -62,7 +62,7 @@ ItemType List::get(int index) {
 	if (0 <= index and index <= size) {
 		Node* ptr = firstNode;
 		for (index; index - 1 > 0; index--) { ptr = ptr->next; }
-		return ptr->item;
+		return *(ptr->item);
 	}
 	else { return item; }
 }
@@ -85,29 +85,38 @@ int List::getLength() { return size; }
 //------------------- Other useful functions -----------------
 
 // display the items in the list
-void List::print() {
+bool List::print() {
 	if (firstNode != NULL) {
 		Node* ptr = firstNode;
 		int counter = 0;
 		while (ptr != NULL) {
+			string temp = (*(ptr->item)).getDescription();
 			counter++;
-			cout << counter << ". \t\b\b\b\b" << ptr->item.getTitle() << endl;
-			cout << "\t\b\b\b\b" << ptr->item.getDescription() << endl;
+			if (temp.length() > 80)
+			{
+				temp.resize(80);
+				cout << counter << ". \t\b\b\b\b" << (*(ptr->item)).getTitle() << endl;
+				cout << "\t\b\b\b\b" << temp << "..." << endl;
+			}
+			else
+			{
+				cout << counter << ". \t\b\b\b\b" << (*(ptr->item)).getTitle() << endl;
+				cout << "\t\b\b\b\b" << temp << endl;
+			}
 			ptr = ptr->next;
 		}
+		return true;
 	}
-	else {
-		cout << "No Topics yet!" << endl;
-	}
+	return false;
 }
 
-ForumElements* List::returnAddress(ItemType item) {
+ForumElement* List::returnAddress(ItemType item) {
 	if (firstNode != NULL) {
 		Node* ptr = firstNode;
-		while (ptr->next != NULL && ptr->item.getTitle() != item.getTitle()) {
+		while (ptr->next != NULL && (*(ptr->item)).getTitle() != item.getTitle()) {
 			ptr = ptr->next;
 		}
-		if (ptr->item.getTitle() == item.getTitle()) { return &(ptr->item); }
+		if ((*(ptr->item)).getTitle() == item.getTitle()) { return  (ptr->item); }
 	}
 	else return nullptr;
 }

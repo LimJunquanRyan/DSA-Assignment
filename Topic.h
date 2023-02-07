@@ -6,14 +6,15 @@
 using namespace std;
 
 
-class Topic : virtual public ForumElements {
+class Topic : public ForumElement {
 private:
 	List* posts;
 
 public:
 	Topic();
 	Topic(string t, string d);
-	void addSubElements(Post post);
+	List* getSubElements();
+	void addSubElements(Post* post);
 	void printSubElements();
 	void print() override;
 };
