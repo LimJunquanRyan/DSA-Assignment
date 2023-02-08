@@ -112,10 +112,16 @@ void Dictionary::print() {
 }
 
 KeyType Dictionary::getAtIndex(int index) { 
-	if (items[index] != nullptr) {
-		return items[index]->item.getUsername();
-	}
-	else {
-		cout << "Username is null." << endl;
+	for (int i = 0; i < MAX_SIZE; i++) {
+		if (items[i] != NULL) {
+			Node* current = items[i];
+			if (index == 0) { return current->item.getUsername(); }
+			index--;
+			while (current->next != NULL) {
+				current = current->next;
+				if (index == 0) { return current->item.getUsername(); }
+				index--;
+			}
+		}
 	}
 }

@@ -86,7 +86,7 @@ void saveAccounts(Dictionary* accounts)
 	ofstream outAccountFile("accountsFile.txt");
 	if (outAccountFile.is_open()) {
 		// For each account
-		for (int i = 1; i <= accounts->getLength(); i++) {
+		for (int i = 0; i < accounts->getLength(); i++) {
 			string username = accounts->getAtIndex(i);
 			string password = accounts->get(accounts->getAtIndex(i)).getPassword();
 			outAccountFile << ":a" << endl; // flag for account
@@ -454,7 +454,7 @@ int main()
 				}
 			}
 			saveForum(&forum);
-			//saveAccounts(&accounts);
+			saveAccounts(&accounts);
 		}
 		// Option 2: Register Account
 		else if (mainOption == 2)
