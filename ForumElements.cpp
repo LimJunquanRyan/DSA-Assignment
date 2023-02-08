@@ -30,6 +30,10 @@ bool ForumElement::getPriority() { return priority; }
 
 void ForumElement::updatePriority() { priority = !priority; }
 
+void ForumElement::setPriority(bool newPriority) { priority = newPriority; }
+
+int ForumElement::getSerial() { return serial; }
+
 void ForumElement::print() {
 	cout << title << endl;
 	cout << description << endl;

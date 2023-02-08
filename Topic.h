@@ -1,6 +1,5 @@
 #pragma once
 #include <string>
-#include <fstream>
 #include <iostream>
 #include "List.h"
 #include "Post.h"
@@ -18,14 +17,5 @@ public:
 	void addSubElements(Post* post);
 	void printSubElements();
 	void print() override;
-	
-	friend ostream &operator<<(ostream &os, const Topic &t) {
-    os << t.posts;
-    return os;
-	}
-
-	friend istream &operator>>(istream &is, Topic &t) {
-    is >> t.posts;
-    return is;
-  }
+	void sortByPriorityAndSerial();
 };

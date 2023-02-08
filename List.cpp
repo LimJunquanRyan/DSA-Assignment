@@ -24,14 +24,17 @@ bool List::add(ItemType* item) {
 		Node* prev = nullptr;
 		while (ptr->item->getPriority())
 		{
-			ptr = ptr->next;
 			prev = ptr;
+			ptr = ptr->next;
 		}
 		if (prev != nullptr) {
-			newNode->next = ptr;
 			prev->next = newNode;
+			newNode->next = ptr;
 		}
-		else newNode->next = firstNode; 
+		else {
+			newNode->next = firstNode;
+			firstNode = newNode;
+		}
 	}
 	else firstNode = newNode;
 	size++;
@@ -134,6 +137,79 @@ ForumElement* List::returnAddress(ItemType item) {
 	return nullptr;
 }
 
-void List::sortPriority() {
+List::Node** List::getFirstNode() { return &firstNode; }
 
+List::Node* List::SortedMerge(Node* a, Node* b) {
+	Node* result = NULL;
+
+	// Base cases
+	if (a == NULL)
+		return (b);
+	else if (b == NULL)
+		return (a);
+
+	// Pick either a or b, and recur
+	if (a->item->getPriority() && b->item->getPriority() || !(a->item->getPriority()) && !(b->item->getPriority())) {
+		if (a->item->getSerial() >= b->item->getSerial()) {
+			result = a;
+			result->next = SortedMerge(a->next, b);
+		}
+		else {
+			result = b;
+			result->next = SortedMerge(a, b->next);
+		}
+	}
+	else if (a->item->getPriority()) {
+		result = a;
+		result->next = SortedMerge(a->next, b);
+	}
+	else if (b->item->getPriority()) {
+		result = b;
+		result->next = SortedMerge(a, b->next);
+	}
+	return result;
+}
+
+void List::FrontBackSplit(Node* source,
+	Node** frontRef, Node** backRef)
+{
+	Node* fast;
+	Node* slow;
+	slow = source;
+	fast = source->next;
+
+	// Advance 'fast' two nodes, and advance 'slow' one node
+	while (fast != NULL) {
+		fast = fast->next;
+		if (fast != NULL) {
+			slow = slow->next;
+			fast = fast->next;
+		}
+	}
+
+	// 'slow' is before the midpoint in the list, so split it in two at that point.
+	*frontRef = source;
+	*backRef = slow->next;
+	slow->next = NULL;
+}
+
+void List::mergeSortbyPriorityAndSerial(Node** headRef) {
+	Node* head = *headRef;
+	Node* a;
+	Node* b;
+
+	// Base case -- length 0 or 1
+	if ((head == NULL) || (head->next == NULL)) {
+		return;
+	}
+
+	// Split head into 'a' and 'b' sublists
+	FrontBackSplit(head, &a, &b);
+
+	// Recursively sort the sublists
+	mergeSortbyPriorityAndSerial(&a);
+	mergeSortbyPriorityAndSerial(&b);
+
+	// answer = merge the two sorted lists together
+	*headRef = SortedMerge(a, b);
 }

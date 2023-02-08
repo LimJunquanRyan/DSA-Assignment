@@ -60,8 +60,15 @@ public:
 
 	ForumElement* returnAddress(ItemType item);
 
-	void sortPriority();
+	Node** getFirstNode();
 
+	Node* SortedMerge(Node* a, Node* b);
+
+	void FrontBackSplit(Node* source,
+		Node** frontReference, Node** backReference);
+
+	void mergeSortbyPriorityAndSerial(Node** headRef);
+	
 	// void replace(int index, ItemType item);
 	// int search(ItemType item);
 };

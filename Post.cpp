@@ -19,14 +19,20 @@ Post::~Post() {
 Post::Post(string t, string d, int s, string a) : ForumElement(t, d, s) 
 {
 	accountName = a;
-	List* temp = new List();
-	temp->add(new Reply("Reply1", "desc", 1, "1"));
-	temp->add(new Reply("Reply2", "desc", 1, "2"));
-	temp->add(new Reply("Reply3", "desc", 1, "2"));
-	replies = temp;
+	replies = new List();
 	smileReaction = 0;
 	mehReaction = 0;
 	cryReaction = 0;
+}
+
+Post::Post(string t, string d, bool p, int sR, int mR, int cR, int s, string a) : ForumElement(t, d, s)
+{
+	accountName = a;
+	replies = new List();
+	setPriority(p);
+	smileReaction = sR;
+	mehReaction = mR;
+	cryReaction = cR;
 }
 
 string Post::getAccountName() { return accountName; }
@@ -34,20 +40,37 @@ string Post::getAccountName() { return accountName; }
 int Post::getSmileReaction() {
 	return smileReaction;
 }
+
 void Post::addSmileReaction() {
 	smileReaction++;
 }
+
+void Post::setSmileReaction(int num) {
+	smileReaction = num;
+}
+
 int Post::getMehReaction() {
 	return mehReaction;
 }
+
 void Post::addMehReaction() {
 	mehReaction++;
 }
+
+void Post::setMehReaction(int num) {
+	mehReaction = num;
+}
+
 int Post::getCryReaction() {
 	return cryReaction;
 }
+
 void Post::addCryReaction() {
 	cryReaction++;
+}
+
+void Post::setCryReaction(int num) {
+	cryReaction = num;
 }
 
 List* Post::getSubElements() { return replies; }

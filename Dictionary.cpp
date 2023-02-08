@@ -96,17 +96,19 @@ bool Dictionary::isEmpty() {
 	else { return false; }
 }
 
-int Dictionary::getLength() { return 0; }
+int Dictionary::getLength() { return size; }
 
 void Dictionary::print() {
 	for (int i = 0; i < MAX_SIZE; i++) {
 		if (items[i] != NULL) {
 			Node* current = items[i];
-			cout << current->key << ": " << current->item.getUsername() << endl;
+			cout << current->item.getUsername() << "," << current->item.getPassword() << endl;
 			while (current->next != NULL) {
 				current = current->next;
-				cout << current->key << ": " << current->item.getUsername() << endl;
+				cout << current->item.getUsername() << "," << current->item.getPassword() << endl;
 			}
 		}
 	}
 }
+
+KeyType Dictionary::getAtIndex(int index) { return items[index]->item.getUsername(); }

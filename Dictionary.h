@@ -4,7 +4,7 @@
 #include "Account.h"
 using namespace std;
 
-const int MAX_SIZE = 1;
+const int MAX_SIZE = 101;
 typedef string KeyType;
 typedef Account ValueType;
 
@@ -69,4 +69,6 @@ public:
 
 	// void replace(KeyType key, ValueType item);
 	// bool contains(KeyType key);
+
+	KeyType getAtIndex(int index);
 };

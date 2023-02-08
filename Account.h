@@ -11,7 +11,9 @@ private:
 
 public:
 	Account();
+	~Account();
 	Account(string u, string p);
 	string getUsername();
+	string getPassword();
 	bool checkPassword(string inputPassword);
 };

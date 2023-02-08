@@ -19,5 +19,7 @@ public:
 	void setDescription(string newDescription);
 	bool getPriority();
 	void updatePriority();
+	void setPriority(bool newPriority);
+	int getSerial();
 	virtual void print();
 };
