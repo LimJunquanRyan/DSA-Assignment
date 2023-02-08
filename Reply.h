@@ -11,6 +11,7 @@ private:
 public:
 	Reply();
 	~Reply();
-	Reply(string title, string description, string accountName);
+	Reply(string t, string d, int s, string a);
+	string getAccountName();
 	void print() override;
 };

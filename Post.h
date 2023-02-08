@@ -10,15 +10,22 @@ class Post : public ForumElement {
 private:
 	List* replies;
 	string accountName;
-	List* reactions;
+	int smileReaction;
+	int mehReaction;
+	int cryReaction;
 
 public:
 	Post();
 	~Post();
-	Post(string t, string d, string a);
-	bool getPriority();
-	void setPriority();
+	Post(string t, string d, int s, string a);
 	string getAccountName();
+	int getSmileReaction();
+	void addSmileReaction();
+	int getMehReaction();
+	void addMehReaction();
+	int getCryReaction();
+	void addCryReaction();
+	List* getSubElements();
 	void addSubElements(Reply* reply);
 	void printSubElements();
 	void print() override;

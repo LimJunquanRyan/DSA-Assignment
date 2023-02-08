@@ -11,16 +11,29 @@ List::~List() {	// destructor
 	}
 } 
 
-// add an item to the back of the list (append)
+// add an item to the front of the list (depends on priority)
 // pre : size < MAX_SIZE
 // post: item is added to the front of the list
 //       size of list is increased by 1
 bool List::add(ItemType* item) {
-	Node *newNode = new Node;
+	Node* newNode = new Node;
 	newNode->item = item;
 	newNode->next = NULL;
-	if (!isEmpty()) { newNode->next = firstNode; }
-	firstNode = newNode;
+	if (!isEmpty()) { 
+		Node* ptr = firstNode;
+		Node* prev = nullptr;
+		while (ptr->item->getPriority())
+		{
+			ptr = ptr->next;
+			prev = ptr;
+		}
+		if (prev != nullptr) {
+			newNode->next = ptr;
+			prev->next = newNode;
+		}
+		else newNode->next = firstNode; 
+	}
+	else firstNode = newNode;
 	size++;
 	return true;
 }
@@ -113,10 +126,14 @@ bool List::print() {
 ForumElement* List::returnAddress(ItemType item) {
 	if (firstNode != NULL) {
 		Node* ptr = firstNode;
-		while (ptr->next != NULL && (*(ptr->item)).getTitle() != item.getTitle()) {
+		while (ptr->next != NULL && ptr->item->getTitle() != item.getTitle()) {
 			ptr = ptr->next;
 		}
-		if ((*(ptr->item)).getTitle() == item.getTitle()) { return  (ptr->item); }
+		if (ptr->item->getTitle() == item.getTitle()) { return ptr->item; }
 	}
-	else return nullptr;
+	return nullptr;
+}
+
+void List::sortPriority() {
+
 }

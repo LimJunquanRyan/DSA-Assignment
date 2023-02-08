@@ -60,6 +60,8 @@ public:
 
 	ForumElement* returnAddress(ItemType item);
 
+	void sortPriority();
+
 	// void replace(int index, ItemType item);
 	// int search(ItemType item);
 };

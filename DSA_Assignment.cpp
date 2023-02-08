@@ -1,4 +1,4 @@
-// DSA_Assignment.cpp : This file contains the 'main' function. Program execution begins and ends there.//
+﻿// DSA_Assignment.cpp : This file contains the 'main' function. Program execution begins and ends there.//
 
 #include <iostream>
 #include <string>
@@ -7,6 +7,7 @@
 #include "Account.h"
 #include "Topic.h"
 #include "Dictionary.h"
+
 
 // Main Menu: Menu displayed when the app is first run.
 void mainMenu()
@@ -37,6 +38,7 @@ void loggedInMenu()
 	cout << "Enter option : ";
 }
 
+/*
 void saveFile() 
 {
 	// Write to a file
@@ -59,7 +61,7 @@ void loadFile()
 	// Read from a file
 	ifstream inFile("example.txt");
 	if (inFile.is_open()) {
-		std::string line;
+		string line;
 		while (getline(inFile, line)) {
 			cout << line << endl;
 		}
@@ -69,6 +71,7 @@ void loadFile()
 		cerr << "Unable to load file." << endl;
 	}
 }
+*/
 
 int main()
 {
@@ -77,16 +80,17 @@ int main()
 	Dictionary accounts;
 	Topic* currentTopic = new Topic();
 	Post* currentPost;
-	wcout.imbue(locale(""));
-	wcout << L"??" << endl;
+	string smileReaction = "^_^";
+	string mehReaction = "-.-";
+	string cryReaction = "T.T";
 
 	// Initialise sample topics
-    forum.add(new Topic("Neuroscience", "Neuroscience is the scientific study of nervous systems. Articles involving neurology, brain science, neurobiology, psychology, computer science, artificial intelligence, statistics, prosthetics, neuroimaging, engineering, medicine, physics, mathematics, pharmacology, electrophysiology, biology, robotics and technology are listed here."));
-    forum.add(new Topic("Neurology", "Neurology is the study of the structure and diseases of the brain and the nervous system."));
-    forum.add(new Topic("Psychology", "Psychology is the scientific study of the human mind and its functions, especially those affecting behaviour in a given context."));
-    forum.add(new Topic("Artificial Intelligence", "Artificial Intelligence is the theory and development of computer systems able to perform tasks normally requiring human intelligence, such as visual perception, speech recognition, decision-making, and translation between languages."));
-    forum.add(new Topic("Genetics", "Genetics involves the study of heredity and the variation of inherited characteristics."));
-    forum.add(new Topic("Neurotechology", "Neurotechnology encompasses any method or electronic device which interfaces with the nervous system to monitor or modulate neural activity."));
+    forum.add(new Topic("Neuroscience", "Neuroscience is the scientific study of nervous systems. Articles involving neurology, brain science, neurobiology, psychology, computer science, artificial intelligence, statistics, prosthetics, neuroimaging, engineering, medicine, physics, mathematics, pharmacology, electrophysiology, biology, robotics and technology are listed here.", 1));
+    forum.add(new Topic("Neurology", "Neurology is the study of the structure and diseases of the brain and the nervous system.", 2));
+    forum.add(new Topic("Psychology", "Psychology is the scientific study of the human mind and its functions, especially those affecting behaviour in a given context.", 3));
+    forum.add(new Topic("Artificial Intelligence", "Artificial Intelligence is the theory and development of computer systems able to perform tasks normally requiring human intelligence, such as visual perception, speech recognition, decision-making, and translation between languages.", 4));
+    forum.add(new Topic("Genetics", "Genetics involves the study of heredity and the variation of inherited characteristics.", 5));
+    forum.add(new Topic("Neurotechology", "Neurotechnology encompasses any method or electronic device which interfaces with the nervous system to monitor or modulate neural activity.", 6));
 
 	/*
 	forum.print();
@@ -162,13 +166,17 @@ int main()
 								currentPost = dynamic_cast<Post*>((*(currentTopic->getSubElements())).returnAddress((*(currentTopic->getSubElements())).get(postSelected)));
 								cout << currentPost->getTitle() << endl;
 								cout << currentPost->getDescription() << endl;
+								cout << smileReaction << ": " << currentPost->getSmileReaction() << " | " << mehReaction << ": " << currentPost->getMehReaction() << " | " << cryReaction << ": " << currentPost->getCryReaction() << endl;
 								currentPost->printSubElements();
-								cout << "Press 1 to \\U1F60A" << endl;
+								cout << "Press 1 to " << endl;
 								if (currentPost->getAccountName() == identifiedAccount.getUsername()) { cout << "Edit/Delete \n"; }
 								cin >> postOption;
 								// Option 1: React to Post
 								if (postOption == 1) {
-
+									currentPost->addSmileReaction();
+									cout << "hi" << currentPost->getSmileReaction();
+									//currentPost->addCryReaction();
+									//currentPost->addMehReaction();
 								}
 								// Option 2: Reply to post
 								else if (postOption == 2) {
@@ -178,7 +186,7 @@ int main()
 									cin >> replyTitle;
 									cout;
 									cin >> replyDescription;
-									currentPost->addSubElements(new Reply(replyTitle, replyDescription, identifiedAccount.getUsername()));
+									currentPost->addSubElements(new Reply(replyTitle, replyDescription, (currentPost->getSubElements()->getLength()) + 1, identifiedAccount.getUsername()));
 								}
 								else if (postOption == 0) {
 
@@ -196,7 +204,7 @@ int main()
 							cin >> title;
 							cout << "Enter description for new post: ";
 							cin >> description;
-							(*currentTopic).addSubElements(new Post(title, description, identifiedAccount.getUsername()));
+							currentTopic->addSubElements(new Post(title, description, (currentTopic->getSubElements()->getLength()) + 1, identifiedAccount.getUsername()));
 						}
 						// Option 0: Back
 						else if (viewOrAddPost == 0) {
@@ -217,7 +225,7 @@ int main()
 					cin >> title;
 					cout << "Enter description for new topic: ";
 					cin >> description;
-					forum.add(new Topic(title, description));
+					forum.add(new Topic(title, description, forum.getLength() + 1));
 				}
 				// Option 3: View My Posts (Edit/Delete Posts)
 				else if (loggedInOption == 3)
@@ -363,4 +371,15 @@ int main()
 			cout << "\nYour option is invalid. Please enter a value between 0 to 4.	\n";
 		}
 	}
+	/*
+	ofstream ofs("topic.txt");
+	List* temp = new List();
+	temp->add(new Post("Post1", "Desc", 1, "1"));
+	ofs << temp;
+	ofs.close();
+	*/
+
+	ifstream ifs("topic.txt");
+	ifs >> Topic->posts;
+	ifs.close();
 }
