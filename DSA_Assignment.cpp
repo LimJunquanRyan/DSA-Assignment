@@ -2,6 +2,7 @@
 
 #include <iostream>
 #include <string>
+#include <unordered_map>
 #include <fstream>
 #include "List.h"
 #include "Account.h"
@@ -38,20 +39,22 @@ void loggedInMenu()
 	cout << "Enter option : ";
 }
 
-
+// Save Data File for Forum
 void saveForum(List* forum)
 {
 	// Write to a file
 	ofstream outForumFile("forumFile.txt");
 	if (outForumFile.is_open()) {
+		// For each topic
 		for (int i = 1; i <= forum->getLength(); i++) {
 			Topic* tempTopic = dynamic_cast<Topic*>(forum->returnAddress(forum->get(i)));
-			outForumFile << ":t" << endl;
+			outForumFile << ":t" << endl; // flag for topic
 			outForumFile << tempTopic->getTitle() << endl;
 			outForumFile << tempTopic->getDescription() << endl;
+			// For each post in the current topic
 			for (int j = 1; j <= tempTopic->getSubElements()->getLength(); j++) {
 				Post* tempPost = dynamic_cast<Post*>(tempTopic->getSubElements()->returnAddress(tempTopic->getSubElements()->get(j)));
-				outForumFile << ":p" << endl;
+				outForumFile << ":p" << endl; // flag for post
 				outForumFile << tempPost->getTitle() << endl;
 				outForumFile << tempPost->getDescription() << endl;
 				outForumFile << tempPost->getAccountName() << endl;
@@ -59,9 +62,10 @@ void saveForum(List* forum)
 				outForumFile << tempPost->getSmileReaction() << endl;
 				outForumFile << tempPost->getMehReaction() << endl;
 				outForumFile << tempPost->getCryReaction() << endl;
+				// For each reply in the current post
 				for (int k = 1; k <= tempPost->getSubElements()->getLength(); k++) {
 					Reply* tempReply = dynamic_cast<Reply*>(tempPost->getSubElements()->returnAddress(tempPost->getSubElements()->get(k)));
-					outForumFile << ":r" << endl;
+					outForumFile << ":r" << endl; // flag for reply
 					outForumFile << tempReply->getTitle() << endl;
 					outForumFile << tempReply->getDescription() << endl;
 					outForumFile << tempReply->getAccountName() << endl;
@@ -76,15 +80,16 @@ void saveForum(List* forum)
 	}
 }
 
-/*
+// Save Data File for Accounts
 void saveAccounts(Dictionary* accounts)
 {
 	ofstream outAccountFile("accountsFile.txt");
 	if (outAccountFile.is_open()) {
+		// For each account
 		for (int i = 1; i <= accounts->getLength(); i++) {
 			string username = accounts->getAtIndex(i);
 			string password = accounts->get(accounts->getAtIndex(i)).getPassword();
-			outAccountFile << "placeholder" << endl;
+			outAccountFile << ":a" << endl; // flag for account
 			outAccountFile << username << endl;
 			outAccountFile << password << endl;
 		}
@@ -95,8 +100,8 @@ void saveAccounts(Dictionary* accounts)
 		cerr << "Unable to save file." << endl;
 	}
 }
-*/
 
+// Load Data File for Forum
 void loadForum(List* forum)
 {
 	Topic* currentTopic = new Topic();
@@ -111,17 +116,16 @@ void loadForum(List* forum)
 	ifstream inForumFile("forumFile.txt");
 	if (inForumFile.is_open()) {
 		string line;
-
 		while (getline(inForumFile, line)) {
-			if (line == ":t") {
+			if (line == ":t") { // flag for topic
 				string title;
 				string description;
 				getline(inForumFile, title);
 				getline(inForumFile, description);
-				forum->add(new Topic(title, description, forum->getLength() + 1));
+				forum->add(new Topic(title, description, forum->getLength() + 1)); // create new topic from data file
 				currentTopic = dynamic_cast<Topic*>(forum->returnAddress(forum->get(forum->getLength() - 1)));
 			}
-			if (line == ":p") {
+			if (line == ":p") { // flag for post
 				string title;
 				string description;
 				string accountName;
@@ -140,17 +144,17 @@ void loadForum(List* forum)
 				getline(inForumFile, tempSmileReaction);
 				getline(inForumFile, tempMehReaction);
 				getline(inForumFile, tempCryReaction);
-				currentTopic->addSubElements(new Post(title, description, priority, smileReaction, mehReaction, cryReaction, currentTopic->getSubElements()->getLength() + 1, accountName));
+				currentTopic->addSubElements(new Post(title, description, priority, smileReaction, mehReaction, cryReaction, currentTopic->getSubElements()->getLength() + 1, accountName)); // create new post from data file
 				currentPost = dynamic_cast<Post*>(currentTopic->getSubElements()->returnAddress(currentTopic->getSubElements()->get(currentTopic->getSubElements()->getLength() - 1)));
 			}
-			if (line == ":r") {
+			if (line == ":r") { // flag for reply
 				string title;
 				string description;
 				string accountName;
 				getline(inForumFile, title);
 				getline(inForumFile, description);
 				getline(inForumFile, accountName);
-				currentPost->addSubElements(new Reply(title, description, currentPost->getSubElements()->getLength() + 1, accountName));
+				currentPost->addSubElements(new Reply(title, description, currentPost->getSubElements()->getLength() + 1, accountName)); // create new reply from data file
 			}
 		}
 		inForumFile.close();
@@ -160,6 +164,7 @@ void loadForum(List* forum)
 	}
 }
 
+// Load Data File for Accounts
 /*
 void loadAccounts(Dictionary* accounts)
 {
@@ -188,8 +193,10 @@ int main()
 	// Declaration of the variables to be used
 	List forum;
 	Dictionary accounts;
-	//loadForum(&forum);
+	loadForum(&forum);
+
 	//loadAccounts(&accounts);
+	
 	Topic* currentTopic = new Topic();
 	Post* currentPost;
 	string smileReaction = "^_^";
@@ -217,7 +224,7 @@ int main()
 	while (true) 
 	{
 		int mainOption;
-		mainMenu();
+		mainMenu(); // display main menu
 		cin >> mainOption;
 		// Option 1: Login Account
 		if (mainOption == 1)
@@ -230,16 +237,16 @@ int main()
 			cin >> inputPassword;
 
 			Account identifiedAccount = accounts.get(inputUsername);
-			if (!identifiedAccount.checkPassword(inputPassword))
+			if (!identifiedAccount.checkPassword(inputPassword)) // if password does not match
 			{
 				cout << "\nWrong password! \n";
 				continue;
 			}
 			while (true) {
 				int loggedInOption;
-				loggedInMenu();
+				loggedInMenu(); // display logged in menu
 				cin >> loggedInOption;
-				// Option 1: View Topics
+				// Option 1 > 1: View Topics
 				if (loggedInOption == 1)
 				{
 					cout << endl;
@@ -264,13 +271,12 @@ int main()
 						int viewOrAddPost;
 						cout << "Press 1 to View Post." << endl;
 						cout << "Press 2 to Add Post." << endl;
-						// Press 3 pin post
 						cout << "Press 3 to Pin Post" << endl;
 						cout << "Press 0 to Back." << endl;
 
 						cin >> viewOrAddPost;
 
-						// Option 1: View Specific Post
+						// Option 1 > 1 > 1: View Specific Post
 						if (viewOrAddPost == 1) {
 							int postSelected;
 							cout << "\nEnter Post Number (or 0 to Back): ";
@@ -279,29 +285,37 @@ int main()
 							if (postSelected != 0) {
 								int postOption;
 								currentPost = dynamic_cast<Post*>(currentTopic->getSubElements()->returnAddress(currentTopic->getSubElements()->get(postSelected)));
-								cout << currentPost->getTitle() << endl;
-								cout << currentPost->getDescription() << endl;
+								cout << "Title: " << currentPost->getTitle() << endl;
+								cout << "Description: " << currentPost->getDescription() << endl;
 								cout << smileReaction << ": " << currentPost->getSmileReaction() << " | " << mehReaction << ": " << currentPost->getMehReaction() << " | " << cryReaction << ": " << currentPost->getCryReaction() << endl;
 								currentPost->printSubElements();
-								if (currentPost->getAccountName() == identifiedAccount.getUsername()) { cout << "Edit/Delete \n"; }
+								if (currentPost->getAccountName() == identifiedAccount.getUsername()) { 
+									cout << "Press 1 to React to Post." << endl; 
+									cout << "Press 2 to Reply to Post." << endl;
+									cout << "Press 0 to Back." << endl;
+									cout << endl;
+								}
 								cin >> postOption;
-								// Option 1: React to Post
+								// Option 1 > 1 > 1 > 1: React to Post
 								if (postOption == 1) {
 									int reactionOption;
 									cout << "Press 1 to " << smileReaction << ", 2 to " << mehReaction << ", 3 to " << cryReaction << endl;
 									cin >> reactionOption;
+									// Add smile reaction
 									if (reactionOption == 1) {
 										currentPost->addSmileReaction();
 									}
+									// Add meh reaction
 									else if (reactionOption == 2) {
 										currentPost->addMehReaction();
 									}
+									// add cry reaction
 									else if (reactionOption == 3) {
 										currentPost->addCryReaction();
 									}
 									cout << smileReaction << ": " << currentPost->getSmileReaction() << " | " << mehReaction << ": " << currentPost->getMehReaction() << " | " << cryReaction << ": " << currentPost->getCryReaction() << endl;
 								}
-								// Option 2: Reply to post
+								// Option 1 > 1 > 1 > 2: Reply to post
 								else if (postOption == 2) {
 									string replyTitle;
 									string replyDescription;
@@ -310,16 +324,17 @@ int main()
 									cout;
 									cin >> replyDescription;
 									currentPost->addSubElements(new Reply(replyTitle, replyDescription, (currentPost->getSubElements()->getLength()) + 1, identifiedAccount.getUsername()));
+									cout << "Reply added successfully!";
 								}
 								else if (postOption == 0) {
-
+									break;
 								}
 							}
 							else {
 								continue;
 							}
 						}
-						// Option 2: Add Post in Specific Topic
+						// Option 1 > 1 > 2: Add Post in Specific Topic
 						else if (viewOrAddPost == 2) {
 							string title; 
 							string description;
@@ -329,7 +344,7 @@ int main()
 							cin >> description;
 							currentTopic->addSubElements(new Post(title, description, (currentTopic->getSubElements()->getLength()) + 1, identifiedAccount.getUsername()));
 						}
-						// Option 3: Pin Post in Specific Topic
+						// Option 1 > 1 > 3: Pin Post in Specific Topic
 						else if (viewOrAddPost == 3) {
 							int postToBePinned;
 							cout << "Enter Post Number to be pinned: ";
@@ -339,7 +354,7 @@ int main()
 							currentTopic->sortByPriorityAndSerial();
 							currentPost->setTitle(currentPost->getTitle() + " (Pinned)");
 						}
-						// Option 0: Back
+						// Option 1 > 1 > 0: Back
 						else if (viewOrAddPost == 0) {
 							break;
 						}
@@ -349,7 +364,7 @@ int main()
 						}
 					}	
 				}
-				// Option 2: Add Topic
+				// Option 1 > 2: Add Topic
 				else if (loggedInOption == 2)
 				{
 					string title; 
@@ -359,8 +374,10 @@ int main()
 					cout << "Enter description for new topic: ";
 					cin >> description;
 					forum.add(new Topic(title, description, forum.getLength() + 1));
+
+					cout << "Topic added successfully!";
 				}
-				// Option 3: View My Posts (Edit/Delete Posts)
+				// Option 1 > 3: View My Posts (Edit/Delete Posts)
 				else if (loggedInOption == 3)
 				{
 					int counter = 0;
@@ -371,9 +388,9 @@ int main()
 							Post* tempPost = dynamic_cast<Post*>((*(tempTopic->getSubElements())).returnAddress((*(tempTopic->getSubElements())).get(j)));
 							if ((*tempPost).getAccountName() == identifiedAccount.getUsername()) {
 								string tempString = (*tempPost).getDescription();
-								if (tempString.length() > 80)
+								if (tempString.length() > 80) // if description longer than 80 char
 								{
-									tempString.resize(80);
+									tempString.resize(80); // truncate to 80 char and add ... behind
 									cout << counter << ". \t\b\b\b\b" << (*tempPost).getTitle() << endl;
 									cout << "\t\b\b\b\b" << tempString << "..." << endl;
 								}
@@ -409,8 +426,6 @@ int main()
 							}
 						}
 						cout << "Post has been successfully edited!";
-						// print current title
-						// print new description
 					}
 					else if (editOrDelete == 2)
 					{
@@ -427,7 +442,7 @@ int main()
 						}
 					}
 				}
-				// Option 0: Log Out
+				// Option 1 > 0: Log Out
 				else if (loggedInOption == 0)
 				{
 					break;
@@ -452,8 +467,10 @@ int main()
 			cin >> inputPassword;
 
 			accounts.add(inputUsername, Account(inputUsername, inputPassword));
+
+			cout << "\nAccount successfully created!\n";
 			saveForum(&forum);
-			//saveAccounts(&accounts);
+			saveAccounts(&accounts);
 
 			continue;
 		}
@@ -461,7 +478,7 @@ int main()
 		else if (mainOption == 3)
 		{
 			cout << endl;
-			if (!(forum.print())) {
+			if (!(forum.print())) { // if no topics
 				cout << "No topics yet." << endl;
 			}
 			else {
