@@ -126,6 +126,7 @@ bool List::print() {
 	return false;
 }
 
+// Returns pointer to the address of the ForumElement in the argument Node passed
 ForumElement* List::returnAddress(ItemType item) {
 	if (firstNode != NULL) {
 		Node* ptr = firstNode;
@@ -137,8 +138,10 @@ ForumElement* List::returnAddress(ItemType item) {
 	return nullptr;
 }
 
+// Returns pointer to the address of the first Node
 List::Node** List::getFirstNode() { return &firstNode; }
 
+// Recursive helper function used in mergeSortByPriorityAndSerial
 List::Node* List::SortedMerge(Node* a, Node* b) {
 	Node* result = NULL;
 
@@ -148,7 +151,8 @@ List::Node* List::SortedMerge(Node* a, Node* b) {
 	else if (b == NULL)
 		return (a);
 
-	// Pick either a or b, and recur
+	// Checks priority first
+	// If both a and b have Priority or don't have priority, checks Serial Number to select a or b
 	if (a->item->getPriority() && b->item->getPriority() || !(a->item->getPriority()) && !(b->item->getPriority())) {
 		if (a->item->getSerial() >= b->item->getSerial()) {
 			result = a;
@@ -159,10 +163,12 @@ List::Node* List::SortedMerge(Node* a, Node* b) {
 			result->next = SortedMerge(a, b->next);
 		}
 	}
+	// If a has Priority but not b, select a
 	else if (a->item->getPriority()) {
 		result = a;
 		result->next = SortedMerge(a->next, b);
 	}
+	// If b has priority but not a, select b
 	else if (b->item->getPriority()) {
 		result = b;
 		result->next = SortedMerge(a, b->next);
@@ -170,6 +176,7 @@ List::Node* List::SortedMerge(Node* a, Node* b) {
 	return result;
 }
 
+// Splits list in two by providing frontReference as pointer to the front of the list and backReference as pointer to the back of the list
 void List::FrontBackSplit(Node* source,
 	Node** frontRef, Node** backRef)
 {
@@ -178,7 +185,7 @@ void List::FrontBackSplit(Node* source,
 	slow = source;
 	fast = source->next;
 
-	// Advance 'fast' two nodes, and advance 'slow' one node
+	// Advance 'fast' two nodes, and advance 'slow' one node each iteration, so that fast reaches endpoint of list while slow reaches midpoint of list
 	while (fast != NULL) {
 		fast = fast->next;
 		if (fast != NULL) {
@@ -193,6 +200,7 @@ void List::FrontBackSplit(Node* source,
 	slow->next = NULL;
 }
 
+// Merge Sort Algorithm based on Priority and Serial Number
 void List::mergeSortbyPriorityAndSerial(Node** headRef) {
 	Node* head = *headRef;
 	Node* a;

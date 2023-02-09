@@ -58,15 +58,20 @@ public:
 	// display the items in the list
 	bool print();
 
+	// Returns pointer to the address of the ForumElement in the argument Node passed
 	ForumElement* returnAddress(ItemType item);
 
+	// Returns pointer to the address of the first Node
 	Node** getFirstNode();
 
+	// Recursive helper function used in mergeSortByPriorityAndSerial
 	Node* SortedMerge(Node* a, Node* b);
 
+	// Splits list in two by providing frontReference as pointer to the front of the list and backReference as pointer to the back of the list
 	void FrontBackSplit(Node* source,
 		Node** frontReference, Node** backReference);
 
+	// Merge Sort Algorithm based on Priority and Serial Number
 	void mergeSortbyPriorityAndSerial(Node** headRef);
 	
 	// void replace(int index, ItemType item);
