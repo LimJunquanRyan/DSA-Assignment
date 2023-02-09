@@ -1,4 +1,12 @@
 ﻿// DSA_Assignment.cpp : This file contains the 'main' function. Program execution begins and ends there.//
+/*
+Members:
+Xiao Yaojie (S10222764)
+Lim Junquan Ryan (S10192609)
+
+Group: Dr Pamela Fanclub
+*/
+
 
 #include <iostream>
 #include <string>
@@ -165,14 +173,13 @@ void loadForum(List* forum)
 }
 
 // Load Data File for Accounts
-/*
 void loadAccounts(Dictionary* accounts)
 {
 	ifstream inAccountFile("accountsFile.txt");
 	if (inAccountFile.is_open()) {
 		string line;
 		while (getline(inAccountFile, line)) {
-			if (line == "placeholder") {
+			if (line == ":a") {
 				string accountName;
 				string password;
 				getline(inAccountFile, accountName);
@@ -186,7 +193,6 @@ void loadAccounts(Dictionary* accounts)
 		cerr << "Unable to save file." << endl;
 	}
 }
-*/
 
 int main()
 {
@@ -194,8 +200,7 @@ int main()
 	List forum;
 	Dictionary accounts;
 	loadForum(&forum);
-
-	//loadAccounts(&accounts);
+	loadAccounts(&accounts);
 	
 	Topic* currentTopic = new Topic();
 	Post* currentPost;
@@ -500,6 +505,7 @@ int main()
 				cout << endl;
 				if (postSelected != 0) {
 					currentPost = dynamic_cast<Post*>((*(currentTopic->getSubElements())).returnAddress((*(currentTopic->getSubElements())).get(postSelected)));
+					cout << smileReaction << ": " << currentPost->getSmileReaction() << " | " << mehReaction << ": " << currentPost->getMehReaction() << " | " << cryReaction << ": " << currentPost->getCryReaction() << endl;
 					currentPost->printSubElements();
 				}
 				else {

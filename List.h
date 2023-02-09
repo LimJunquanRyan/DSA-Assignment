@@ -1,3 +1,11 @@
+/*
+Members:
+Xiao Yaojie (S10222764)
+Lim Junquan Ryan (S10192609)
+
+Group: Dr Pamela Fanclub
+*/
+
 #pragma once
 #include<iostream>
 #include "ForumElement.h"
